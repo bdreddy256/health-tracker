@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+
+<!-- ───── Auth Screen ───── -->
+<div id="auth-screen" class="screen">
+  <div class="auth-card">
+    <h1>Health Tracker</h1>
+    <form id="auth-form">
+      <input type="email" id="auth-email" placeholder="Email" required>
+      <input type="password" id="auth-password" placeholder="Password" required minlength="6">
+      <button type="submit" id="auth-submit">Sign In</button>
+      <p class="toggle-auth">
+        <span id="auth-toggle-text">Don't have an account?</span>
+        <a href="#" id="auth-toggle-link">Sign Up</a>
+      </p>
+      <p id="auth-error" class="error"></p>
+    </form>
+  </div>
+</div>
+
+<!-- ───── Main App ───── -->
+<div id="app-screen" class="screen hidden">
+  <header>
+    <h1>Health Tracker</h1>
+    <div class="header-actions">
+      <span id="user-email"></span>
+      <button id="btn-logout" class="btn-sm">Logout</button>
+    </div>
+  </header>
+
+  <nav>
+    <button class="tab active" data-tab="entry">Log</button>
+    <button class="tab" data-tab="history">History</button>
+    <button class="tab" data-tab="metrics">Metrics</button>
+    <button class="tab" data-tab="settings">Settings</button>
+  </nav>
+
+  <!-- ── Log Entry ── -->
+  <section id="tab-entry" class="tab-content active">
+    <h2>Daily Entry</h2>
+    <form id="entry-form">
+      <label>Date
+        <input type="date" id="entry-date" required>
+      </label>
+      <label>Weight (<span class="unit-label">lbs</span>)
+        <input type="number" id="entry-weight" step="0.1" min="0">
+      </label>
+      <label>Steps
+        <input type="number" id="entry-steps" min="0">
+      </label>
+      <label>Protein (g)
+        <input type="number" id="entry-protein" min="0">
+      </label>
+      <label>Calories
+        <input type="number" id="entry-calories" min="0">
+      </label>
+      <label>Workout Type
+        <select id="entry-workout-type">
+          <option value="none">None</option>
+          <option value="cardio">Cardio</option>
+          <option value="strength">Strength</option>
+          <option value="mixed">Mixed</option>
+          <option value="other">Other</option>
+        </select>
+      </label>
+      <label>Workout Volume
+        <input type="number" id="entry-volume" min="0" step="0.1" placeholder="minutes, sets, kg…">
+      </label>
+      <label>Workout Notes
+        <textarea id="entry-notes" rows="2" placeholder="Optional"></textarea>
+      </label>
+      <button type="submit" id="entry-submit">Save Entry</button>
+      <p id="entry-status" class="status"></p>
+    </form>
+  </section>
+
+  <!-- ── History ── -->
+  <section id="tab-history" class="tab-content">
+    <h2>History</h2>
+    <div id="history-list"></div>
+  </section>
+
+  <!-- ── Metrics ── -->
+  <section id="tab-metrics" class="tab-content">
+    <h2>Weekly Metrics</h2>
+    <div id="weekly-summary" class="summary-cards"></div>
+    <h2>30-Day Charts</h2>
+    <div class="chart-grid">
+      <div class="chart-wrap"><canvas id="chart-weight"></canvas></div>
+      <div class="chart-wrap"><canvas id="chart-steps"></canvas></div>
+      <div class="chart-wrap"><canvas id="chart-protein"></canvas></div>
+      <div class="chart-wrap"><canvas id="chart-calories"></canvas></div>
+      <div class="chart-wrap"><canvas id="chart-volume"></canvas></div>
+    </div>
+  </section>
+
+  <!-- ── Settings ── -->
+  <section id="tab-settings" class="tab-content">
+    <h2>Settings</h2>
+    <form id="settings-form">
+      <label>Weight Unit
+        <select id="setting-unit">
+          <option value="lbs">lbs</option>
+          <option value="kg">kg</option>
+        </select>
+      </label>
+      <label>Daily Step Goal
+        <input type="number" id="goal-steps" min="0" value="10000">
+      </label>
+      <label>Daily Protein Goal (g)
+        <input type="number" id="goal-protein" min="0" value="150">
+      </label>
+      <label>Daily Calorie Goal
+        <input type="number" id="goal-calories" min="0" value="2000">
+      </label>
+      <button type="submit">Save Settings</button>
+      <p id="settings-status" class="status"></p>
+    </form>
+  </section>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
